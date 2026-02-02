@@ -65,26 +65,27 @@ body{
   border-bottom-left-radius:6px;
 }
 
-/* GIF bubble */
+/* Animated illustration bubble */
 .gif-box{
   background:#ffffff;
-  padding:10px;
-  border-radius:18px;
-  max-width:85%;
+  padding:12px;
+  border-radius:20px;
+  max-width:90%;
   align-self:flex-start;
   margin-bottom:14px;
 }
 
 .gif-box img{
   width:100%;
-  border-radius:14px;
+  border-radius:16px;
 }
 
-/* Controls */
+/* Inline controls near question */
 .controls{
-  padding:16px;
   background:#f7f9fb;
-  border-top:1px solid #ddd;
+  padding:14px;
+  border-radius:18px;
+  margin-bottom:14px;
   text-align:center;
 }
 
@@ -126,19 +127,21 @@ button{
     <div class="msg from-me">Hey Ayush 😌</div>
     <div class="msg from-me">I have a very important question…</div>
 
-    <!-- Animated proposal clip -->
+    <!-- SAFE animated proposal illustration -->
     <div class="gif-box">
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHJyZ2Y1eXB6cWZlZjF2em4xNmN1YzQ3dnV4aTQxM3d6cTJ1ZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o6Zt7w6C1Z5Z6pHf2/giphy.gif"
-           alt="Girl proposing to boy animation">
+      <img 
+        src="https://assets-global.website-files.com/5e8d5b6a3c1a7b2e3f3b8a3b/60b8f7f3d4f6a84c8b6f9a9a_couple-proposal-animation.gif"
+        alt="Girl proposing boy animation">
     </div>
 
     <div class="msg from-me">💙 Will you be my Valentine?</div>
-  </div>
 
-  <div class="controls" id="controls">
-    <button id="soundBtn">🔊 Enable Sound</button><br>
-    <button id="yes">Yes 💙</button>
-    <button id="no">No 🙄</button>
+    <!-- Controls moved CLOSE to question -->
+    <div class="controls">
+      <button id="soundBtn">🔊 Enable Sound</button><br>
+      <button id="yes">Yes 💙</button>
+      <button id="no">No 🙄</button>
+    </div>
   </div>
 </div>
 
@@ -161,6 +164,7 @@ const taunts=[
   "Haha nope 😈"
 ];
 
+/* Enable sound */
 soundBtn.onclick=()=>{
   soundEnabled=true;
   noSound.play().then(()=>noSound.pause());
@@ -168,6 +172,7 @@ soundBtn.onclick=()=>{
   soundBtn.innerText="🔊 Sound On";
 };
 
+/* NO logic */
 noBtn.onclick=()=>{
   if(soundEnabled){
     noSound.currentTime=0;
@@ -181,6 +186,7 @@ noBtn.onclick=()=>{
   chat.scrollTop=chat.scrollHeight;
 };
 
+/* YES logic */
 yesBtn.onclick=()=>{
   if(soundEnabled){
     yesSound.play();
