@@ -6,6 +6,7 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   height:100vh;
@@ -17,12 +18,14 @@ body{
   overflow:hidden;
 }
 
-/* WhatsApp card */
+/* WhatsApp Card (BIGGER) */
 .card{
   background:#fff;
-  width:330px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  width:92vw;
+  max-width:420px;
+  min-height:420px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.35);
   text-align:center;
   position:relative;
   z-index:2;
@@ -31,31 +34,27 @@ body{
 .header{
   background:#075E54;
   color:white;
-  padding:12px;
-  border-radius:20px 20px 0 0;
-  font-weight:bold;
+  padding:14px;
+  font-size:18px;
+  border-radius:24px 24px 0 0;
+  font-weight:600;
 }
 
 .chat{
   background:#DCF8C6;
-  padding:15px;
-  margin:15px;
-  border-radius:10px;
-  font-size:15px;
-}
-
-.typing{
-  font-size:13px;
-  color:#555;
-  margin:0 15px 10px;
+  padding:18px;
+  margin:18px;
+  border-radius:14px;
+  font-size:17px;
+  line-height:1.4;
 }
 
 .buttons{
-  padding-bottom:15px;
+  padding-bottom:20px;
 }
 
 button{
-  padding:10px 20px;
+  padding:12px 22px;
   font-size:16px;
   border:none;
   border-radius:25px;
@@ -69,7 +68,7 @@ button{
   position:absolute;
 }
 
-/* Hearts */
+/* Floating hearts */
 .heart{
   position:absolute;
   font-size:20px;
@@ -81,15 +80,7 @@ button{
 }
 
 /* Confetti */
-.confetti{
-  position:absolute;
-  width:10px;
-  height:10px;
-  background:red;
-  animation:fall 3s linear infinite;
-}
 @keyframes fall{
-  from{transform:translateY(0)}
   to{transform:translateY(100vh)}
 }
 </style>
@@ -97,24 +88,38 @@ button{
 
 <body>
 
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/02/23/audio_7b8c9f8b34.mp3" type="audio/mpeg">
+<!-- AUDIO FILES -->
+<audio id="sadTrombone">
+  <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_8e0c7f1a8f.mp3">
 </audio>
 
+<audio id="vineBoom">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c6d9d6b4a.mp3">
+</audio>
+
+<audio id="ohNo">
+  <source src="https://cdn.pixabay.com/audio/2022/03/24/audio_58b5e1efbb.mp3">
+</audio>
+
+<audio id="meme1">
+  <source src="https://cdn.pixabay.com/audio/2022/03/09/audio_3f6b35f2f1.mp3">
+</audio>
+
+<audio id="meme2">
+  <source src="https://cdn.pixabay.com/audio/2022/03/07/audio_7e9c6dfe7a.mp3">
+</audio>
+
+<!-- UI -->
 <div class="card">
   <div class="header">WhatsApp 💬</div>
 
   <div class="chat">
-    Hey <b>HUSBAND_NAME</b> 😌<br><br>
+    Hey <b>Ayush</b> 😌<br><br>
     I have a very important question…
   </div>
 
-  <div class="typing">typing…</div>
-
   <div class="chat">
     💖 Will you be my Valentine? 💖
-    <br><br>
-    ⏳ Countdown: <span id="countdown"></span>
   </div>
 
   <div class="buttons">
@@ -124,26 +129,81 @@ button{
 </div>
 
 <script>
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.bottom="0";
+  h.style.fontSize=(16+Math.random()*22)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},350);
+
+/* NO button chaos (STAYS IN SCREEN) */
 const noBtn=document.getElementById("no");
-const music=document.getElementById("music");
 
-/* Play music on first interaction */
-document.body.addEventListener("click",()=>music.play(),{once:true});
+const randomNoSounds=[
+  document.getElementById("sadTrombone"),
+  document.getElementById("meme1"),
+  document.getElementById("meme2")
+];
 
-/* NO button runs */
-function moveNo(){
-  noBtn.style.left=Math.random()*(window.innerWidth-100)+"px";
-  noBtn.style.top=Math.random()*(window.innerHeight-50)+"px";
+function playRandomNoSound(){
+  const s=randomNoSounds[Math.floor(Math.random()*randomNoSounds.length)];
+  s.currentTime=0;
+  s.play();
 }
+
+function moveNo(){
+  playRandomNoSound();
+
+  const btnW=noBtn.offsetWidth;
+  const btnH=noBtn.offsetHeight;
+  const padding=20;
+
+  const maxX=window.innerWidth-btnW-padding;
+  const maxY=window.innerHeight-btnH-padding;
+
+  const x=Math.random()*maxX;
+  const y=Math.random()*maxY;
+
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
-noBtn.addEventListener("click",()=>{
-  alert("Are you sureeee? 😏");
-  moveNo();
-});
+noBtn.addEventListener("click",moveNo);
 
-/* YES clicked */
+/* Initial No position */
+noBtn.style.left="50%";
+noBtn.style.top="75%";
+noBtn.style.transform="translateX(-50%)";
+
+/* Confetti */
+function confettiBlast(){
+  for(let i=0;i<120;i++){
+    const c=document.createElement("div");
+    c.style.position="absolute";
+    c.style.width="10px";
+    c.style.height="10px";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.left=Math.random()*100+"vw";
+    c.style.top="-10px";
+    c.style.animation="fall 3s linear";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* YES button */
 document.getElementById("yes").onclick=()=>{
+  document.getElementById("vineBoom").play();
+  setTimeout(()=>document.getElementById("ohNo").play(),400);
+  confettiBlast();
+
   document.body.innerHTML=`
   <div style="
     height:100vh;
@@ -155,52 +215,14 @@ document.getElementById("yes").onclick=()=>{
     color:white;
     font-family:Segoe UI;
     text-align:center;">
-    <h1>YAYYYY 💖🥰</h1>
+    <h1>😂💥 GOT YOU 💥😂</h1>
     <p style="font-size:22px;">
-      Best decision of your life 😌<br><br>
-      Happy Valentine’s Day ❤️<br>
-      Love,<br><b>YOUR_NAME</b>
+      No escape, Ayush 😏❤️<br><br>
+      Happy Valentine’s Day 💘<br>
+      Love,<br><b>Pragya</b>
     </p>
   </div>`;
-  confettiBlast();
 };
-
-/* Hearts */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤️";
-  h.style.left=Math.random()*100+"vw";
-  h.style.bottom="0";
-  h.style.fontSize=(15+Math.random()*20)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),5000);
-},300);
-
-/* Confetti */
-function confettiBlast(){
-  for(let i=0;i<100;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
-}
-
-/* Countdown */
-const vDay=new Date(new Date().getFullYear(),1,14);
-setInterval(()=>{
-  const now=new Date();
-  const diff=vDay-now;
-  if(diff>0){
-    const d=Math.floor(diff/(1000*60*60*24));
-    document.getElementById("countdown").innerText=d+" days left 💘";
-  }else{
-    document.getElementById("countdown").innerText="Today 💖";
-  }
-},1000);
 </script>
 
 </body>
