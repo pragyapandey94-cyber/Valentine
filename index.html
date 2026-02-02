@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ayush, Be My Valentine 😏💖</title>
+<title>Ayush, Be My Valentine 💖</title>
 
 <style>
 *{box-sizing:border-box}
@@ -18,21 +18,15 @@ body{
   overflow:hidden;
 }
 
-/* Card */
 .card{
   background:#fff;
   width:94vw;
   max-width:440px;
-  min-height:470px;
+  min-height:460px;
   border-radius:26px;
   box-shadow:0 15px 40px rgba(0,0,0,0.4);
   text-align:center;
   position:relative;
-  animation:pop 0.6s ease;
-}
-@keyframes pop{
-  from{transform:scale(0.7);opacity:0}
-  to{transform:scale(1);opacity:1}
 }
 
 .header{
@@ -50,17 +44,12 @@ body{
   margin:16px;
   border-radius:14px;
   font-size:17px;
-  line-height:1.4;
 }
 
 .typing{
   font-size:14px;
   color:#666;
-  margin-bottom:8px;
-  animation:blink 1.2s infinite;
-}
-@keyframes blink{
-  50%{opacity:0.4}
+  margin-bottom:6px;
 }
 
 .buttons{
@@ -74,9 +63,7 @@ button{
   border-radius:30px;
   cursor:pointer;
   margin:6px;
-  transition:transform 0.2s;
 }
-button:active{transform:scale(0.9)}
 
 #soundBtn{
   background:#ff4d6d;
@@ -86,12 +73,6 @@ button:active{transform:scale(0.9)}
 #yes{
   background:#25D366;
   color:white;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-  100%{transform:scale(1)}
 }
 
 #no{
@@ -99,7 +80,7 @@ button:active{transform:scale(0.9)}
   position:absolute;
 }
 
-/* Screen shake */
+/* Shake */
 .shake{
   animation:shake 0.3s;
 }
@@ -143,7 +124,7 @@ button:active{transform:scale(0.9)}
     I need an honest answer…
   </div>
 
-  <div class="typing">Ayush is typing…</div>
+  <div class="typing" id="typing">Ayush is typing…</div>
 
   <div class="chat">
     💖 Will you be my Valentine? 💖
@@ -158,39 +139,125 @@ button:active{transform:scale(0.9)}
 </div>
 
 <script>
-/* Sound unlock */
-let soundEnabled=false;
-const sadTrombone=document.getElementById("sadTrombone");
-const vineBoom=document.getElementById("vineBoom");
-const ohNo=document.getElementById("ohNo");
-const meme1=document.getElementById("meme1");
-const meme2=document.getElementById("meme2");
+/* SAFE REFERENCES */
+const soundBtn = document.getElementById("soundBtn");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const card = document.getElementById("card");
+const typing = document.getElementById("typing");
 
-soundBtn.onclick=()=>{
-  soundEnabled=true;
-  [sadTrombone,vineBoom,ohNo,meme1,meme2].forEach(a=>{
-    a.play().then(()=>a.pause());
-    a.currentTime=0;
+const sadTrombone = document.getElementById("sadTrombone");
+const vineBoom = document.getElementById("vineBoom");
+const ohNo = document.getElementById("ohNo");
+const meme1 = document.getElementById("meme1");
+const meme2 = document.getElementById("meme2");
+
+let soundEnabled = false;
+
+/* ENABLE SOUND */
+soundBtn.addEventListener("click", () => {
+  soundEnabled = true;
+  [sadTrombone, vineBoom, ohNo, meme1, meme2].forEach(a => {
+    a.play().then(() => a.pause());
+    a.currentTime = 0;
   });
-  soundBtn.innerText="🔊 Sound On ✅";
-};
+  soundBtn.innerText = "🔊 Sound On ✅";
+});
 
-/* Floating hearts */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤️";
-  h.style.left=Math.random()*100+"vw";
-  h.style.bottom="0";
+/* FLOATING HEARTS */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.bottom = "0";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),5000);
-},300);
+  setTimeout(() => h.remove(), 5000);
+}, 350);
 
-/* NO button chaos */
-const noBtn=document.getElementById("no");
-const taunts=[
+/* NO BUTTON */
+const taunts = [
   "Nice try 😏",
-  "Not happening 😂",
-  "Caught you 😈",
+  "Nope 😂",
   "Ayush pls 🙄",
-  "
+  "Wrong button 🤡",
+  "Caught you 😈"
+];
+const noSounds = [sadTrombone, meme1, meme2];
+
+function moveNo(){
+  if(soundEnabled){
+    const s = noSounds[Math.floor(Math.random()*noSounds.length)];
+    s.currentTime = 0;
+    s.play();
+  }
+
+  if(navigator.vibrate) navigator.vibrate(150);
+
+  card.classList.add("shake");
+  setTimeout(() => card.classList.remove("shake"), 300);
+
+  const pad = 20;
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - pad);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - pad);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  typing.innerText = taunts[Math.floor(Math.random()*taunts.length)];
+}
+
+noBtn.addEventListener("click", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+noBtn.style.left = "50%";
+noBtn.style.top = "75%";
+noBtn.style.transform = "translateX(-50%)";
+
+/* CONFETTI */
+function confettiBlast(){
+  for(let i=0;i<150;i++){
+    const c=document.createElement("div");
+    c.style.position="absolute";
+    c.style.width="10px";
+    c.style.height="10px";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.left=Math.random()*100+"vw";
+    c.style.top="-10px";
+    c.style.animation="fall 3s linear";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* YES BUTTON */
+yesBtn.addEventListener("click", () => {
+  if(soundEnabled){
+    vineBoom.play();
+    setTimeout(() => ohNo.play(), 400);
+  }
+
+  confettiBlast();
+
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      background:linear-gradient(135deg,#ff758c,#ff7eb3);
+      color:white;
+      font-family:Segoe UI;
+      text-align:center;">
+      <h1>🏆 YOU WIN 🏆</h1>
+      <p style="font-size:24px;">
+        Ayush = Valentine Locked 🔒❤️<br><br>
+        Love,<br><b>Pragya</b> 😘
+      </p>
+    </div>`;
+});
+</script>
+
+</body>
+</html>
