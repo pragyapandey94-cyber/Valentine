@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Be My Valentine 💖</title>
+<title>Ayush, Be My Valentine 😏💖</title>
 
 <style>
 *{box-sizing:border-box}
@@ -18,64 +18,104 @@ body{
   overflow:hidden;
 }
 
-/* WhatsApp Card (BIGGER) */
+/* Card */
 .card{
   background:#fff;
-  width:92vw;
-  max-width:420px;
-  min-height:420px;
-  border-radius:24px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.35);
+  width:94vw;
+  max-width:440px;
+  min-height:470px;
+  border-radius:26px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
   text-align:center;
   position:relative;
-  z-index:2;
+  animation:pop 0.6s ease;
+}
+@keyframes pop{
+  from{transform:scale(0.7);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
 .header{
   background:#075E54;
   color:white;
-  padding:14px;
+  padding:16px;
   font-size:18px;
-  border-radius:24px 24px 0 0;
+  border-radius:26px 26px 0 0;
   font-weight:600;
 }
 
 .chat{
   background:#DCF8C6;
   padding:18px;
-  margin:18px;
+  margin:16px;
   border-radius:14px;
   font-size:17px;
   line-height:1.4;
 }
 
+.typing{
+  font-size:14px;
+  color:#666;
+  margin-bottom:8px;
+  animation:blink 1.2s infinite;
+}
+@keyframes blink{
+  50%{opacity:0.4}
+}
+
 .buttons{
-  padding-bottom:20px;
+  padding-bottom:18px;
 }
 
 button{
-  padding:12px 22px;
-  font-size:16px;
+  padding:12px 24px;
+  font-size:17px;
   border:none;
-  border-radius:25px;
+  border-radius:30px;
   cursor:pointer;
   margin:6px;
+  transition:transform 0.2s;
+}
+button:active{transform:scale(0.9)}
+
+#soundBtn{
+  background:#ff4d6d;
+  color:white;
 }
 
-#yes{background:#25D366;color:white}
+#yes{
+  background:#25D366;
+  color:white;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+  100%{transform:scale(1)}
+}
+
 #no{
   background:#ccc;
   position:absolute;
 }
 
-/* Floating hearts */
+/* Screen shake */
+.shake{
+  animation:shake 0.3s;
+}
+@keyframes shake{
+  25%{transform:translateX(-5px)}
+  50%{transform:translateX(5px)}
+  75%{transform:translateX(-5px)}
+}
+
+/* Hearts */
 .heart{
   position:absolute;
-  font-size:20px;
+  font-size:22px;
   animation:float 5s linear infinite;
 }
 @keyframes float{
-  from{transform:translateY(0);opacity:1}
   to{transform:translateY(-100vh);opacity:0}
 }
 
@@ -88,39 +128,28 @@ button{
 
 <body>
 
-<!-- AUDIO FILES -->
-<audio id="sadTrombone">
-  <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_8e0c7f1a8f.mp3">
-</audio>
+<!-- AUDIO -->
+<audio id="sadTrombone" src="https://cdn.pixabay.com/audio/2022/03/10/audio_8e0c7f1a8f.mp3"></audio>
+<audio id="vineBoom" src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c6d9d6b4a.mp3"></audio>
+<audio id="ohNo" src="https://cdn.pixabay.com/audio/2022/03/24/audio_58b5e1efbb.mp3"></audio>
+<audio id="meme1" src="https://cdn.pixabay.com/audio/2022/03/09/audio_3f6b35f2f1.mp3"></audio>
+<audio id="meme2" src="https://cdn.pixabay.com/audio/2022/03/07/audio_7e9c6dfe7a.mp3"></audio>
 
-<audio id="vineBoom">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c6d9d6b4a.mp3">
-</audio>
-
-<audio id="ohNo">
-  <source src="https://cdn.pixabay.com/audio/2022/03/24/audio_58b5e1efbb.mp3">
-</audio>
-
-<audio id="meme1">
-  <source src="https://cdn.pixabay.com/audio/2022/03/09/audio_3f6b35f2f1.mp3">
-</audio>
-
-<audio id="meme2">
-  <source src="https://cdn.pixabay.com/audio/2022/03/07/audio_7e9c6dfe7a.mp3">
-</audio>
-
-<!-- UI -->
-<div class="card">
+<div class="card" id="card">
   <div class="header">WhatsApp 💬</div>
 
   <div class="chat">
     Hey <b>Ayush</b> 😌<br><br>
-    I have a very important question…
+    I need an honest answer…
   </div>
+
+  <div class="typing">Ayush is typing…</div>
 
   <div class="chat">
     💖 Will you be my Valentine? 💖
   </div>
+
+  <button id="soundBtn">🔊 Enable Sound</button>
 
   <div class="buttons">
     <button id="yes">Yes ❤️</button>
@@ -129,6 +158,23 @@ button{
 </div>
 
 <script>
+/* Sound unlock */
+let soundEnabled=false;
+const sadTrombone=document.getElementById("sadTrombone");
+const vineBoom=document.getElementById("vineBoom");
+const ohNo=document.getElementById("ohNo");
+const meme1=document.getElementById("meme1");
+const meme2=document.getElementById("meme2");
+
+soundBtn.onclick=()=>{
+  soundEnabled=true;
+  [sadTrombone,vineBoom,ohNo,meme1,meme2].forEach(a=>{
+    a.play().then(()=>a.pause());
+    a.currentTime=0;
+  });
+  soundBtn.innerText="🔊 Sound On ✅";
+};
+
 /* Floating hearts */
 setInterval(()=>{
   const h=document.createElement("div");
@@ -136,94 +182,15 @@ setInterval(()=>{
   h.innerHTML="❤️";
   h.style.left=Math.random()*100+"vw";
   h.style.bottom="0";
-  h.style.fontSize=(16+Math.random()*22)+"px";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),5000);
-},350);
+},300);
 
-/* NO button chaos (STAYS IN SCREEN) */
+/* NO button chaos */
 const noBtn=document.getElementById("no");
-
-const randomNoSounds=[
-  document.getElementById("sadTrombone"),
-  document.getElementById("meme1"),
-  document.getElementById("meme2")
-];
-
-function playRandomNoSound(){
-  const s=randomNoSounds[Math.floor(Math.random()*randomNoSounds.length)];
-  s.currentTime=0;
-  s.play();
-}
-
-function moveNo(){
-  playRandomNoSound();
-
-  const btnW=noBtn.offsetWidth;
-  const btnH=noBtn.offsetHeight;
-  const padding=20;
-
-  const maxX=window.innerWidth-btnW-padding;
-  const maxY=window.innerHeight-btnH-padding;
-
-  const x=Math.random()*maxX;
-  const y=Math.random()*maxY;
-
-  noBtn.style.left=x+"px";
-  noBtn.style.top=y+"px";
-}
-
-noBtn.addEventListener("mouseover",moveNo);
-noBtn.addEventListener("touchstart",moveNo);
-noBtn.addEventListener("click",moveNo);
-
-/* Initial No position */
-noBtn.style.left="50%";
-noBtn.style.top="75%";
-noBtn.style.transform="translateX(-50%)";
-
-/* Confetti */
-function confettiBlast(){
-  for(let i=0;i<120;i++){
-    const c=document.createElement("div");
-    c.style.position="absolute";
-    c.style.width="10px";
-    c.style.height="10px";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    c.style.left=Math.random()*100+"vw";
-    c.style.top="-10px";
-    c.style.animation="fall 3s linear";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
-}
-
-/* YES button */
-document.getElementById("yes").onclick=()=>{
-  document.getElementById("vineBoom").play();
-  setTimeout(()=>document.getElementById("ohNo").play(),400);
-  confettiBlast();
-
-  document.body.innerHTML=`
-  <div style="
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    color:white;
-    font-family:Segoe UI;
-    text-align:center;">
-    <h1>😂💥 GOT YOU 💥😂</h1>
-    <p style="font-size:22px;">
-      No escape, Ayush 😏❤️<br><br>
-      Happy Valentine’s Day 💘<br>
-      Love,<br><b>Pragya</b>
-    </p>
-  </div>`;
-};
-</script>
-
-</body>
-</html>
+const taunts=[
+  "Nice try 😏",
+  "Not happening 😂",
+  "Caught you 😈",
+  "Ayush pls 🙄",
+  "
