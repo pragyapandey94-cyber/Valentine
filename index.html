@@ -1,9 +1,207 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Test Page</title>
-  </head>
-  <body>
-    <h1>GitHub Pages is working ✅</h1>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  height:100vh;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* WhatsApp card */
+.card{
+  background:#fff;
+  width:330px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+
+.header{
+  background:#075E54;
+  color:white;
+  padding:12px;
+  border-radius:20px 20px 0 0;
+  font-weight:bold;
+}
+
+.chat{
+  background:#DCF8C6;
+  padding:15px;
+  margin:15px;
+  border-radius:10px;
+  font-size:15px;
+}
+
+.typing{
+  font-size:13px;
+  color:#555;
+  margin:0 15px 10px;
+}
+
+.buttons{
+  padding-bottom:15px;
+}
+
+button{
+  padding:10px 20px;
+  font-size:16px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  margin:6px;
+}
+
+#yes{background:#25D366;color:white}
+#no{
+  background:#ccc;
+  position:absolute;
+}
+
+/* Hearts */
+.heart{
+  position:absolute;
+  font-size:20px;
+  animation:float 5s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-100vh);opacity:0}
+}
+
+/* Confetti */
+.confetti{
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:red;
+  animation:fall 3s linear infinite;
+}
+@keyframes fall{
+  from{transform:translateY(0)}
+  to{transform:translateY(100vh)}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/02/23/audio_7b8c9f8b34.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <div class="header">WhatsApp 💬</div>
+
+  <div class="chat">
+    Hey <b>HUSBAND_NAME</b> 😌<br><br>
+    I have a very important question…
+  </div>
+
+  <div class="typing">typing…</div>
+
+  <div class="chat">
+    💖 Will you be my Valentine? 💖
+    <br><br>
+    ⏳ Countdown: <span id="countdown"></span>
+  </div>
+
+  <div class="buttons">
+    <button id="yes">Yes ❤️</button>
+    <button id="no">No 🙄</button>
+  </div>
+</div>
+
+<script>
+const noBtn=document.getElementById("no");
+const music=document.getElementById("music");
+
+/* Play music on first interaction */
+document.body.addEventListener("click",()=>music.play(),{once:true});
+
+/* NO button runs */
+function moveNo(){
+  noBtn.style.left=Math.random()*(window.innerWidth-100)+"px";
+  noBtn.style.top=Math.random()*(window.innerHeight-50)+"px";
+}
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
+noBtn.addEventListener("click",()=>{
+  alert("Are you sureeee? 😏");
+  moveNo();
+});
+
+/* YES clicked */
+document.getElementById("yes").onclick=()=>{
+  document.body.innerHTML=`
+  <div style="
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    color:white;
+    font-family:Segoe UI;
+    text-align:center;">
+    <h1>YAYYYY 💖🥰</h1>
+    <p style="font-size:22px;">
+      Best decision of your life 😌<br><br>
+      Happy Valentine’s Day ❤️<br>
+      Love,<br><b>YOUR_NAME</b>
+    </p>
+  </div>`;
+  confettiBlast();
+};
+
+/* Hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.bottom="0";
+  h.style.fontSize=(15+Math.random()*20)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},300);
+
+/* Confetti */
+function confettiBlast(){
+  for(let i=0;i<100;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* Countdown */
+const vDay=new Date(new Date().getFullYear(),1,14);
+setInterval(()=>{
+  const now=new Date();
+  const diff=vDay-now;
+  if(diff>0){
+    const d=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("countdown").innerText=d+" days left 💘";
+  }else{
+    document.getElementById("countdown").innerText="Today 💖";
+  }
+},1000);
+</script>
+
+</body>
 </html>
