@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ayush, Be My Valentine 💖</title>
+<title>Ayush 💙 Pragya</title>
 
 <style>
 *{box-sizing:border-box}
@@ -10,94 +10,92 @@
 body{
   margin:0;
   height:100vh;
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#e5eff7;
   display:flex;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
 }
 
-.card{
-  background:#fff;
-  width:94vw;
-  max-width:440px;
-  min-height:460px;
-  border-radius:26px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.4);
-  text-align:center;
-  position:relative;
+/* Telegram Container */
+.app{
+  width:100%;
+  max-width:420px;
+  height:100vh;
+  background:#e5eff7;
+  display:flex;
+  flex-direction:column;
 }
 
+/* Header */
 .header{
-  background:#075E54;
+  background:#0088cc;
   color:white;
-  padding:16px;
+  padding:14px;
   font-size:18px;
-  border-radius:26px 26px 0 0;
   font-weight:600;
+  text-align:center;
 }
 
+/* Chat area */
 .chat{
-  background:#DCF8C6;
-  padding:18px;
-  margin:16px;
-  border-radius:14px;
-  font-size:17px;
+  flex:1;
+  padding:14px;
+  overflow-y:auto;
 }
 
-.typing{
-  font-size:14px;
-  color:#666;
-  margin-bottom:6px;
+/* Message bubbles */
+.msg{
+  max-width:80%;
+  padding:12px 14px;
+  margin-bottom:10px;
+  border-radius:16px;
+  font-size:16px;
+  line-height:1.4;
 }
 
-.buttons{
-  padding-bottom:18px;
+.from-me{
+  background:#cceeff;
+  align-self:flex-end;
+  border-bottom-right-radius:4px;
+}
+
+.from-them{
+  background:#ffffff;
+  align-self:flex-start;
+  border-bottom-left-radius:4px;
+}
+
+/* Controls */
+.controls{
+  padding:12px;
+  background:#f7f9fb;
+  border-top:1px solid #ddd;
+  text-align:center;
 }
 
 button{
-  padding:12px 24px;
-  font-size:17px;
+  padding:12px 18px;
+  font-size:15px;
   border:none;
-  border-radius:30px;
+  border-radius:22px;
   cursor:pointer;
   margin:6px;
 }
 
 #soundBtn{
-  background:#ff4d6d;
+  background:#0088cc;
   color:white;
 }
 
 #yes{
-  background:#25D366;
+  background:#2ecc71;
   color:white;
 }
 
 #no{
   background:#ccc;
   position:absolute;
-}
-
-/* Shake */
-.shake{
-  animation:shake 0.3s;
-}
-@keyframes shake{
-  25%{transform:translateX(-5px)}
-  50%{transform:translateX(5px)}
-  75%{transform:translateX(-5px)}
-}
-
-/* Hearts */
-.heart{
-  position:absolute;
-  font-size:22px;
-  animation:float 5s linear infinite;
-}
-@keyframes float{
-  to{transform:translateY(-100vh);opacity:0}
 }
 
 /* Confetti */
@@ -110,113 +108,92 @@ button{
 <body>
 
 <!-- AUDIO -->
-<audio id="sadTrombone" src="https://cdn.pixabay.com/audio/2022/03/10/audio_8e0c7f1a8f.mp3"></audio>
-<audio id="vineBoom" src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c6d9d6b4a.mp3"></audio>
-<audio id="ohNo" src="https://cdn.pixabay.com/audio/2022/03/24/audio_58b5e1efbb.mp3"></audio>
-<audio id="meme1" src="https://cdn.pixabay.com/audio/2022/03/09/audio_3f6b35f2f1.mp3"></audio>
-<audio id="meme2" src="https://cdn.pixabay.com/audio/2022/03/07/audio_7e9c6dfe7a.mp3"></audio>
+<audio id="noSound" src="https://cdn.pixabay.com/audio/2022/03/10/audio_8e0c7f1a8f.mp3"></audio>
+<audio id="yesSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c6d9d6b4a.mp3"></audio>
 
-<div class="card" id="card">
-  <div class="header">WhatsApp 💬</div>
+<div class="app" id="app">
+  <div class="header">Ayush 💙 Pragya</div>
 
-  <div class="chat">
-    Hey <b>Ayush</b> 😌<br><br>
-    I need an honest answer…
+  <div class="chat" id="chat">
+    <div class="msg from-me">
+      Hey Ayush 😌
+    </div>
+    <div class="msg from-me">
+      I have a very important question…
+    </div>
+    <div class="msg from-me">
+      💙 Will you be my Valentine?
+    </div>
   </div>
 
-  <div class="typing" id="typing">Ayush is typing…</div>
-
-  <div class="chat">
-    💖 Will you be my Valentine? 💖
-  </div>
-
-  <button id="soundBtn">🔊 Enable Sound</button>
-
-  <div class="buttons">
-    <button id="yes">Yes ❤️</button>
+  <div class="controls">
+    <button id="soundBtn">🔊 Enable Sound</button><br>
+    <button id="yes">Yes 💙</button>
     <button id="no">No 🙄</button>
   </div>
 </div>
 
 <script>
-/* SAFE REFERENCES */
 const soundBtn = document.getElementById("soundBtn");
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
-const card = document.getElementById("card");
-const typing = document.getElementById("typing");
+const chat = document.getElementById("chat");
+const app = document.getElementById("app");
 
-const sadTrombone = document.getElementById("sadTrombone");
-const vineBoom = document.getElementById("vineBoom");
-const ohNo = document.getElementById("ohNo");
-const meme1 = document.getElementById("meme1");
-const meme2 = document.getElementById("meme2");
+const noSound = document.getElementById("noSound");
+const yesSound = document.getElementById("yesSound");
 
 let soundEnabled = false;
 
-/* ENABLE SOUND */
-soundBtn.addEventListener("click", () => {
-  soundEnabled = true;
-  [sadTrombone, vineBoom, ohNo, meme1, meme2].forEach(a => {
-    a.play().then(() => a.pause());
-    a.currentTime = 0;
-  });
-  soundBtn.innerText = "🔊 Sound On ✅";
-});
-
-/* FLOATING HEARTS */
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "❤️";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.bottom = "0";
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 5000);
-}, 350);
-
-/* NO BUTTON */
 const taunts = [
   "Nice try 😏",
-  "Nope 😂",
+  "Wrong option 😌",
   "Ayush pls 🙄",
-  "Wrong button 🤡",
-  "Caught you 😈"
+  "You already know the answer 💙",
+  "Haha nope 😈"
 ];
-const noSounds = [sadTrombone, meme1, meme2];
 
+/* Enable sound */
+soundBtn.onclick = () => {
+  soundEnabled = true;
+  noSound.play().then(()=>noSound.pause());
+  yesSound.play().then(()=>yesSound.pause());
+  soundBtn.innerText = "🔊 Sound On";
+};
+
+/* NO button logic */
 function moveNo(){
   if(soundEnabled){
-    const s = noSounds[Math.floor(Math.random()*noSounds.length)];
-    s.currentTime = 0;
-    s.play();
+    noSound.currentTime = 0;
+    noSound.play();
   }
 
-  if(navigator.vibrate) navigator.vibrate(150);
+  const appRect = app.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
 
-  card.classList.add("shake");
-  setTimeout(() => card.classList.remove("shake"), 300);
+  const maxX = appRect.width - btnRect.width - 20;
+  const maxY = appRect.height - btnRect.height - 120;
 
-  const pad = 20;
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - pad);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - pad);
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 
-  typing.innerText = taunts[Math.floor(Math.random()*taunts.length)];
+  const msg = document.createElement("div");
+  msg.className = "msg from-them";
+  msg.innerText = taunts[Math.floor(Math.random()*taunts.length)];
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
 }
 
 noBtn.addEventListener("click", moveNo);
-noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
-noBtn.style.left = "50%";
-noBtn.style.top = "75%";
-noBtn.style.transform = "translateX(-50%)";
+/* Initial No position */
+noBtn.style.left = "60%";
+noBtn.style.top = "85%";
 
-/* CONFETTI */
+/* Confetti */
 function confettiBlast(){
-  for(let i=0;i<150;i++){
+  for(let i=0;i<120;i++){
     const c=document.createElement("div");
     c.style.position="absolute";
     c.style.width="10px";
@@ -230,33 +207,32 @@ function confettiBlast(){
   }
 }
 
-/* YES BUTTON */
-yesBtn.addEventListener("click", () => {
+/* YES */
+yesBtn.onclick = () => {
   if(soundEnabled){
-    vineBoom.play();
-    setTimeout(() => ohNo.play(), 400);
+    yesSound.play();
   }
 
   confettiBlast();
 
   document.body.innerHTML = `
-    <div style="
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex-direction:column;
-      background:linear-gradient(135deg,#ff758c,#ff7eb3);
-      color:white;
-      font-family:Segoe UI;
-      text-align:center;">
-      <h1>🏆 YOU WIN 🏆</h1>
-      <p style="font-size:24px;">
-        Ayush = Valentine Locked 🔒❤️<br><br>
-        Love,<br><b>Pragya</b> 😘
-      </p>
-    </div>`;
-});
+  <div style="
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:#0088cc;
+    color:white;
+    font-family:system-ui;
+    text-align:center;">
+    <h1>💙 Yayyy 💙</h1>
+    <p style="font-size:22px;">
+      Ayush, you’re officially my Valentine 😌<br><br>
+      Love,<br><b>Pragya</b>
+    </p>
+  </div>`;
+};
 </script>
 
 </body>
